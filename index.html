@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الامتحان النهائي الشامل — Digital Professional | Sunshine T Academy</title>
+<style>
+  :root{
+    --sun:#F5B82E; --sun-soft:#FFF6DE; --blue:#1B7FD4; --blue-dark:#0E5FA8;
+    --teal:#12A5A0; --teal-soft:#E6F7F6; --orange:#FF8A3D; --cream:#FFFBF2;
+    --card:#FFFFFF; --ink:#20303C; --muted:#5B6B76; --line:#EBDFC6;
+    --green:#2E9E5B; --green-soft:#EAF7EF; --red:#D9534F; --red-soft:#FFF3F3;
+    --radius:16px; --shadow:0 6px 20px rgba(32,48,60,.08);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;background:var(--cream);color:var(--ink);line-height:1.9}
+  .topbar{background:linear-gradient(135deg,var(--blue),var(--blue-dark));color:#fff;padding:14px 24px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+  .brand{font-weight:800;font-size:1.1rem}
+  .wrap{max-width:1000px;margin:auto;padding:0 16px}
+  .hidden{display:none!important}
+  .hero{margin:30px auto 14px;text-align:center}
+  .hero h1{margin:6px 0;font-size:1.8rem}
+  .hero p{color:var(--muted);max-width:720px;margin:auto}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin:16px 0}
+  label{font-weight:800;display:block;margin:12px 0 6px;color:var(--blue-dark)}
+  input[type=text],input[type=number]{width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-family:inherit;font-size:1rem;background:#fff}
+  input:focus{outline:none;border-color:var(--blue)}
+  .btn{background:var(--orange);color:#fff;border:0;border-radius:999px;padding:12px 30px;font-size:1.05rem;font-weight:800;cursor:pointer;font-family:inherit}
+  .btn.blue{background:var(--blue)} .btn.teal{background:var(--teal)} .btn.gray{background:var(--muted)}
+  .err{color:var(--red);font-weight:700;margin-top:8px}
+  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+  .rules div{background:var(--sun-soft);border:1px dashed var(--sun);border-radius:12px;padding:10px 14px;font-weight:700;text-align:center}
+  .exambar{position:sticky;top:0;z-index:60;background:var(--blue-dark);color:#fff;padding:10px 18px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;box-shadow:var(--shadow)}
+  .timer{background:var(--teal);border-radius:999px;padding:4px 20px;font-weight:900;font-size:1.1rem;letter-spacing:1px}
+  .timer.danger{background:var(--red);animation:pulse 1s infinite}
+  @keyframes pulse{50%{opacity:.6}}
+  .pal{display:grid;grid-template-columns:repeat(auto-fill,minmax(36px,1fr));gap:6px;margin:14px 0}
+  .pal button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 0;font-weight:700;cursor:pointer;font-family:inherit}
+  .pal button.done{background:var(--green);border-color:var(--green);color:#fff}
+  .qbox{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 20px;margin:14px 0;box-shadow:var(--shadow)}
+  .qbox .qn{display:inline-block;background:var(--blue);color:#fff;border-radius:999px;padding:2px 14px;font-size:.8rem;font-weight:800;margin-bottom:8px}
+  .qbox b.qt{font-size:1.02rem}
+  .opt{display:block;padding:10px 14px;border:2px solid var(--line);border-radius:12px;margin:8px 0;cursor:pointer;background:#fff;transition:.15s}
+  .opt:hover{border-color:var(--blue)}
+  .opt input{margin-left:10px}
+  .opt.sel{border-color:var(--teal);background:var(--teal-soft);font-weight:700}
+  .modal{position:fixed;inset:0;background:rgba(20,30,40,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px}
+  .modal .mcard{background:#fff;border-radius:var(--radius);max-width:480px;width:100%;padding:26px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .score-hero{text-align:center;margin:10px 0}
+  .score-circle{width:130px;height:130px;border-radius:50%;background:var(--sun);color:#6b4d00;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:auto;font-weight:900;box-shadow:var(--shadow)}
+  .score-circle span{font-size:2.2rem;line-height:1}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:16px 0}
+  .stats div{border-radius:12px;padding:12px;text-align:center;font-weight:800}
+  .st-g{background:var(--green-soft);color:var(--green);border:1px solid var(--green)}
+  .st-r{background:var(--red-soft);color:var(--red);border:1px solid var(--red)}
+  .st-y{background:var(--sun-soft);color:#6b4d00;border:1px dashed var(--sun)}
+  .st-b{background:var(--teal-soft);color:var(--teal);border:1px solid var(--teal)}
+  .ritem{background:var(--card);border:1px solid var(--line);border-right:6px solid var(--green);border-radius:12px;padding:12px 18px;margin:10px 0;box-shadow:var(--shadow)}
+  .ritem.wrong{border-right-color:var(--red)}
+  .ritem .ans{margin-top:6px;font-size:.95rem}
+  .ritem .fix{color:var(--green);font-weight:800}
+  .badge{display:inline-block;border-radius:999px;padding:2px 14px;font-size:.8rem;font-weight:800;color:#fff}
+  .b-g{background:var(--green)} .b-r{background:var(--red)} .b-y{background:var(--orange)}
+  footer{background:var(--blue-dark);color:#fff;text-align:center;padding:16px;margin-top:40px;letter-spacing:2px;font-size:.85rem;font-weight:700}
+  @media print{
+    .no-print{display:none!important}
+    body{background:#fff}
+    .qbox,.ritem,.card{box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar no-print">
+  <div class="brand">☀️ Sunshine T Academy · Computer Skills · Digital Professional — الامتحان النهائي الشامل</div>
+  <div class="brand">م/ أحمد</div>
+</header>
+
+<!-- ========== شاشة التسجيل ========== -->
+<div id="scrReg" class="wrap">
+  <section class="hero">
+    <h1>🏅 الامتحان النهائي الشامل</h1>
+    <p>100 سؤال اختياري يغطوا الـ 14 محاضرة · كل سؤال درجة من 100 · الوقت: 60 دقيقة بالضبط — عند انتهاء الوقت الورقة بتتسلم لوحدها</p>
+  </section>
+  <div class="card" style="max-width:560px;margin:auto">
+    <label>اسم الطالب بالكامل *</label>
+    <input type="text" id="stName" placeholder="اكتب اسمك الثلاثي">
+    <label>السن *</label>
+    <input type="number" id="stAge" placeholder="مثال: 14" min="10" max="20">
+    <div class="rules">
+      <div>⏱️ 60 دقيقة</div><div>📝 100 سؤال</div><div>💯 الدرجة من 100</div>
+    </div>
+    <div class="err" id="regErr"></div>
+    <p style="text-align:center"><button class="btn" onclick="startExam()">🚀 ابدأ الامتحان</button></p>
+  </div>
+</div>
+
+<!-- ========== شاشة الامتحان ========== -->
+<div id="scrExam" class="hidden">
+  <div class="exambar no-print">
+    <div id="barName" style="font-weight:800"></div>
+    <div style="font-weight:700">تمت الإجابة: <span id="prog">0</span> / 100</div>
+    <div class="timer" id="timer">60:00</div>
+  </div>
+  <div class="wrap">
+    <div class="pal no-print" id="pal"></div>
+    <div id="questions"></div>
+    <div style="text-align:center;margin:26px 0" class="no-print">
+      <button class="btn teal" style="font-size:1.2rem;padding:14px 50px" onclick="submitPaper(false)">📨 تسليم الورقة</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== شاشة النتيجة ========== -->
+<div id="scrResult" class="wrap hidden">
+  <section class="hero">
+    <h1>📋 ورقة النتيجة والتصحيح</h1>
+    <p id="resMeta"></p>
+  </section>
+  <div class="score-hero">
+    <div class="score-circle"><span id="resScore">0</span>من 100</div>
+    <p id="resVerdict" style="font-weight:900;font-size:1.2rem;margin-top:10px"></p>
+  </div>
+  <div class="stats">
+    <div class="st-g">✅ صحيح: <span id="cOk">0</span></div>
+    <div class="st-r">❌ خطأ: <span id="cNo">0</span></div>
+    <div class="st-y">⬜ بدون إجابة: <span id="cEmpty">0</span></div>
+    <div class="st-b">⏱️ الوقت المستخدم: <span id="cTime">0</span> دقيقة</div>
+  </div>
+  <p style="text-align:center" class="no-print"><button class="btn" onclick="window.print()">🖨️ طباعة ورقة النتيجة</button></p>
+  <div id="resultList"></div>
+</div>
+
+<!-- ========== مودال التنبيه ========== -->
+<div id="modal" class="modal hidden no-print">
+  <div class="mcard">
+    <div style="font-size:2.4rem">⚠️</div>
+    <h3 style="margin:6px 0">لسه فيه أسئلة من غير إجابة!</h3>
+    <p id="modalMsg" style="color:var(--muted);font-weight:700"></p>
+    <p><button class="btn blue" onclick="closeModal()"> أرجع أكمّل</button>
+    <button class="btn" onclick="submitPaper(true)">📨 سلّم على أي حال</button></p>
+  </div>
+</div>
+
+<footer class="no-print">SUNSHINE T ACADEMY — COMPUTER SKILLS — DIGITAL PROFESSIONAL — FINAL EXAM · 100/100</footer>
+
+<script>
+/* ================= بنك الأسئلة: 100 سؤال ================= */
+const Q=[
+{q:"في تشبيه المطبخ — مين بيمثل المعالج (CPU)؟",o:["الدولاب","الشيف","ترابيزة الشغل"],a:1},
+{q:"في نفس التشبيه — الـ RAM بيمثلها؟",o:["ترابيزة الشغل","الدولاب","نافذة المطبخ"],a:0},
+{q:"بيحصل إيه لمحتوى الـ RAM لما الكهرباء تقطع؟",o:["بيفضل محفوظ","بيتمسح","بينتقل للدولاب"],a:1},
+{q:"أنهي تخزين بيفتح ويندوز في ثواني؟",o:["HDD","قرص قديم","SSD"],a:2},
+{q:"اختصار فتح الـ Task Manager مباشرة؟",o:["Ctrl+Shift+Esc","Ctrl+Alt+Del","Win+T"],a:0},
+{q:"في الـ Task Manager — أنهي تبويب بيعرض رسوم CPU وMemory؟",o:["Processes","Startup","Performance"],a:2},
+{q:"الـ Memory واقفة على 95% والجهاز بطيء — أول تصرف ذكي؟",o:["تقفل البرامج المفتوحة في الخلفية","تشتري شاشة جديدة","تعلي الصوت"],a:0},
+{q:"«الشيف عبقري بس الترابيزة صغيرة فالمطبخ بطيء» — المكوّن الصغير هنا؟",o:["المعالج","الـ RAM","الـ SSD"],a:1},
+{q:"اختصار فتح الـ File Explorer؟",o:["Win+I","Win+E","Alt+F4"],a:1},
+{q:"زرار إعادة تسمية ملف محدد في ثانية؟",o:["F5","F12","F2"],a:2},
+{q:"الفرق بين Delete وShift+Delete؟",o:["الأول للسلة والتاني نهائي","مفيش فرق","الأول نهائي والتاني للسلة"],a:0},
+{q:"Win+Ctrl+D بيعمل إيه؟",o:["سطح مكتب افتراضي جديد","بيقفل الجهاز","بينقل بين الأسطح"],a:0},
+{q:"Win+← على نافذة مفتوحة؟",o:["بتكبرها","بتسنابها لنص الشاشة","بتقفلها"],a:1},
+{q:"Ctrl+Z جوه الـ Explorer بيعمل إيه؟",o:["بينسخ","بيتراجع عن عملية ملفات","بيحذف"],a:1},
+{q:"ملف اسمه «صورة.jpg.exe» هو في الحقيقة؟",o:["صورة عادية","برنامج تنفيذي ممكن يكون خطر","فيديو"],a:1},
+{q:"الـ IP Address هو؟",o:["سرعة الجهاز","عنوان فريد لكل جهاز على الشبكة","باسورد الموقع"],a:1},
+{q:"وظيفة الـ DNS؟",o:["ترجمة أسماء المواقع لـ IPs","عرض الصور","تخزين الملفات"],a:0},
+{q:"الأثبت والأقل استجابة للألعاب الأونلاين؟",o:["WiFi","الاتنين زي بعض","Ethernet كابل"],a:2},
+{q:"نتيجة أمر الـ ping بتتقاس بأنهي وحدة؟",o:["MB","ms","GHz"],a:1},
+{q:"أول خطوة في ترتيب الطبيب الشرعي للشبكات؟",o:["ping للراوتر","ping google.com","تغيير الباسورد"],a:0},
+{q:"ping 8.8.8.8 نجح بس ping google.com فشل — المشكلة الأرجح؟",o:["الشاشة","الراوتر بايظ","الـ DNS"],a:2},
+{q:"الجهاز اللي بيستلم النت من الشركة ويوزعه على البيت؟",o:["الراوتر","المونيتر","الماوس"],a:0},
+{q:"الـ Phishing هو؟",o:["برنامج حماية","رسائل مزيّفة بتنتحل جهات حقيقية لسرقة بياناتك","تحميل سريع"],a:1},
+{q:"الدومين الحقيقي للرابط youtube.com.evil.xyz؟",o:["youtube.com","com.evil","evil.xyz"],a:2},
+{q:"الـ Ransomware بيتميز بإيه؟",o:["بيسرّع الجهاز","بيشفر ملفاتك ويطلب فدية","بينضف الفيروسات"],a:1},
+{q:"الأهم في قوة الباسورد؟",o:["الطول","إنه إنجليزي","إنه من غير أرقام"],a:0},
+{q:"الـ 2FA معناها؟",o:["باسوردين","طبقة تانية: باسورد + كود معاك","حسابين"],a:1},
+{q:"وضع التصفح الخفي مش بيخفيك عن؟",o:["تاريخ جهازك بس","المواقع والشبكة ومزود الإنترنت","حد قاعد جنبك"],a:1},
+{q:"وظيفة الـ VPN؟",o:["نفق مشفر لاتصالك","بيشيل الفيروسات","بيسرّع النت دايماً"],a:0},
+{q:"اتصل بيك حد بيقول إنه الدعم الفني وطلب كود التحقق؟",o:["تقوله عادي","متقولوش لأي حد مهما كان","تقول نص الكود"],a:1},
+{q:"الفرق بين التسمية Label والمجلد في Gmail؟",o:["الرسالة الواحدة تحمل أكتر من تسمية","نفس الحاجة بالظبط","المجلد أجدد"],a:0},
+{q:"ميزة بتطبق قواعد أوتوماتيكية على الرسائل الجاية؟",o:["التوقيع","الفلاتر","التأجيل"],a:1},
+{q:"الـ Schedule Send معناها؟",o:["حذف تلقائي","تكتب دلوقتي وتبعت في معاد مختار","رد تلقائي"],a:1},
+{q:"مستوى مشاركة بيخلي الشخص يعلّق من غير تعديل النص؟",o:["Viewer","Editor","Commenter"],a:2},
+{q:"الـ Version History بيفيدك في إيه؟",o:["ترجع نسخة قديمة من ملف","بيسرّع الملف","بيضغط الملف"],a:0},
+{q:"ليه «مشاركة لينك» أحسن من «إرسال الملف»؟",o:["الملف بيفضل واحد ومحدث دايماً","أسهل في الحذف","مش محتاجة نت"],a:0},
+{q:"الـ Shared Drive مميزته؟",o:["شخصي جداً","بيمتلكه الفريق مش الفرد","خارجي بس"],a:1},
+{q:"شرط اشتغال الفهرس التلقائي في Word؟",o:["خط كبير","استخدام الـ Styles","ترقيم يدوي"],a:1},
+{q:"Ctrl+Alt+1 في Word بيطبق أنهي نمط؟",o:["Normal","Heading 2","Heading 1"],a:2},
+{q:"الطريقة الصح لبدء صفحة جديدة؟",o:["Enter عشرين مرة","Ctrl+Enter","مسافات كتير"],a:1},
+{q:"اختصار تباعد الأسطر 1.5؟",o:["Ctrl+5","Ctrl+1","Alt+5"],a:0},
+{q:"الـ Track Changes وظيفته؟",o:["تتبع تعديلات ملوّنة بقبول ورفض","تسريع الجهاز","إخفاء النص"],a:0},
+{q:"الـ Template هو؟",o:["ملف نموذجي جاهز بتنسيقك بيوفر وقتك","صورة","جدول"],a:0},
+{q:"الخط العربي الموصى به للبحوث في الكورس؟",o:["Comic Sans","Sakkal Majalla","أي خط"],a:1},
+{q:"ليه الـ Styles أحسن من التنسيق اليدوي؟",o:["ألوان أكتر","تعديل النمط بينعكس على المستند كله وبيشغل الفهرس","أسرع في الكتابة"],a:1},
+{q:"عنوان الخلية B5 معناه؟",o:["عمود B وصف 5","صف B وعمود 5","خلية رقم 5"],a:0},
+{q:"كل صيغة في Excel لازم تبدأ بـ؟",o:["#","$","="],a:2},
+{q:"جمع النطاق B2:B10 بيكتب إزاي؟",o:["SUM(B2:B10)","ADD(B2:B10)","TOTAL(B2:B10)"],a:0},
+{q:"دالة المتوسط الحسابي؟",o:["MEAN","AVERAGE","AVG"],a:1},
+{q:"=IF(B2>=50,\"ناجح\",\"راسب\") معناها؟",o:["ناجح لو 50 فأكثر وراسب غير كده","راسب دايماً","ناجح دايماً"],a:0},
+{q:"وظيفة الـ VLOOKUP؟",o:["ترتيب خلايا","جيب قيمة من جدول بمطابقة العمود الأول","رسم"],a:1},
+{q:"ليه بنكتب FALSE في آخر الـ VLOOKUP؟",o:["للسرعة","مطابقة تامة","للإلغاء"],a:1},
+{q:"#### في الخلية معناها؟",o:["العمود أضيق من الرقم","صيغة غلط","فيروس"],a:0},
+{q:"الـ Fill Handle بيفيد في إيه؟",o:["تلوين","نسخ الصيغة وتكيفها لكل صف","حذف"],a:1},
+{q:"أنسب رسم لمقارنة عناصر قليلة؟",o:["خطوط","أعمدة Column","Scatter"],a:1},
+{q:"أنسب رسم للتغير مع الوقت؟",o:["Line","دائري","أعمدة"],a:0},
+{q:"أنسب رسم لنصيب كل جزء من الكل؟",o:["Bar","Line","Pie"],a:2},
+{q:"التنسيق الشرطي بيعمل إيه؟",o:["تنسيق تلقائي لما يتحقق شرط","تنسيق يدوي","حماية"],a:0},
+{q:"الـ Data Validation بيمنع إيه؟",o:["إدخال بيانات غلط من الأصل","الحفظ","الطباعة"],a:0},
+{q:"الـ PivotTable بتعمل إيه من غير صيغة واحدة؟",o:["تجميع وتلخيص البيانات","حماية","طباعة"],a:0},
+{q:"في الـ Pivot — فين بتغير Sum لـ Average؟",o:["Value Field Settings","Page Setup","Properties"],a:0},
+{q:"ليه بنبتعد عن رسوم الـ 3D؟",o:["تقيلة","بتشوّه النسب الحقيقية","ممنوعة"],a:1},
+{q:"اختصار أداة Quick Analysis؟",o:["Ctrl+K","Ctrl+Q","Alt+Q"],a:1},
+{q:"قاعدة 6×6 في العروض معناها؟",o:["6 شرائح و6 دقايق","6 أسطر × 6 كلمات بحد أقصى في الشريحة","خط حجم 6"],a:1},
+{q:"قاعدة 10/20/30 بتقول؟",o:["10 شرايح · 20 دقيقة · خط 30","10 دقايق · 20 شريحة · 30 صورة","10 شرايح · 20 ساعة"],a:0},
+{q:"الفرق بين Transition وAnimation؟",o:["الانتقال بين الشرايح والأنيميشن لعنصر داخل الشريحة","نفس الحاجة","عكس بعض"],a:0},
+{q:"الـ Presenter View بوريك انت بس؟",o:["ملاحظاتك + الشريحة الجاية + المؤقت","الشاشة النظيفة","مفيش"],a:0},
+{q:"زرار بيعتّم الشاشة سوداء أثناء العرض؟",o:["K","X","B"],a:2},
+{q:"Shift+F5 في PowerPoint؟",o:["بدء من الأول","بدء من الشريحة الحالية","إنهاء"],a:1},
+{q:"ليه قراءة الشريحة كلمة كلمة خطيئة؟",o:["بتتعب صوتك","الجمهور بيقرأ أسرع منك فمبقاش محتاجك","ممنوعة"],a:1},
+{q:"الـ Prompt هو؟",o:["السؤال أو الأمر اللي بتكتبه للـ AI","برنامج","فيروس"],a:0},
+{q:"معادلة الـ Prompt المحترف؟",o:["دور + سياق + مهمة + شكل","لون + خط","سرعة + طول"],a:0},
+{q:"الـ Hallucination معناها؟",o:["تلفيق الـ AI معلومة بثقة كاملة","رفض الإجابة","بطء"],a:0},
+{q:"Operator بيحصر البحث في مواقع الجامعات؟",o:["edu:","site:edu","site:school"],a:1},
+{q:"filetype:pdf بيدور على إيه؟",o:["ملفات PDF بس","مواقع","صور"],a:0},
+{q:"علامة الطرح (-) في البحث بتعمل إيه؟",o:["بتضيف كلمة","بتستبعد كلمة","بتترجم"],a:1},
+{q:"قاعدة المصادر الثلاثة بتقول؟",o:["المعلومة المهمة تأكد من 3 مصادر مستقلة","مصدر واحد كفاية","3 محركات بحث"],a:0},
+{q:"ليه منسلّمش إجابة الـ AI زي ما هي؟",o:["طويلة","سرقة أدبية وممكن فيها هلوسة","قصيرة"],a:1},
+{q:"أحسن أداة تلخص ملف درس طويل بتوثيق بالصفحة؟",o:["شات عادي","NotebookLM","الآلة الحاسبة"],a:1},
+{q:"ليه هلوسة NotebookLM أقل؟",o:["بيجاوب من ملفاتك انت بس","أبطأ","أصغر"],a:0},
+{q:"Gemini في Gmail بيفيد في إيه؟",o:["تلخيص سلاسل الإيميلات واقتراح ردود","تعديل صور","تحميل"],a:0},
+{q:"زرار Analyze Data في Excel بيديك إيه؟",o:["insights ورسوم جاهزة","مفيش","طباعة"],a:0},
+{q:"الـ Audio Overview بيعمل إيه؟",o:["بيحول مصادرك لحلقة صوتية","بيعلي الصوت","بيسجل صوتك"],a:0},
+{q:"اختبار 3-2-1 بعد الملخص؟",o:["3 أفكار + مصطلحين + سؤال","3 دقايق راحة","3 عمليات بحث"],a:0},
+{q:"الـ Driver هو؟",o:["برنامج مترجم بين ويندوز والقطعة","سواق","لعبة"],a:0},
+{q:"أشهر سبب لجهاز بيفتح ببطء؟",o:["الشاشة صغيرة","برامج Startup كتير","الماوس"],a:1},
+{q:"فين بتعطّل برامج الإقلاع؟",o:["سلة المحذوفات","Task Manager → Startup","الرسام"],a:1},
+{q:"وظيفة الـ Disk Cleanup؟",o:["حذف المؤقتات وبقايا التحديثات بأمان","حذف ملفاتك","تبطيء"],a:0},
+{q:"ليه الـ Restart بيحل مشاكل كتير؟",o:["سحر","بيفضي الـ RAM ويكمل التحديثات","بيكسر الجهاز"],a:1},
+{q:"اختصار إنعاش كارت الشاشة لما الشاشة تلحق؟",o:["Win+Ctrl+Shift+B","Ctrl+C","Alt+Tab"],a:0},
+{q:"ليه ممنوع نعبي الـ SSD لآخره؟",o:["بيعمل صوت","بيبطأ بشكل ملحوظ","ممنوع"],a:1},
+{q:"التعريفات بتتحدث بأمان من فين؟",o:["إعلانات عشوائية","Windows Update أو الموقع الرسمي","رسائل مجهولة"],a:1},
+{q:"قاعدة 3-2-1 بتقول؟",o:["3 نسخ · وسيطتين · واحدة بره البيت","3 أجهزة · شاشتين","3 باسوردات"],a:0},
+{q:"الـ Sync معناها؟",o:["رفع يدوي","تحديث تلقائي مستمر بين جهازك والسحابة","ضغط ملفات"],a:1},
+{q:"علامة ✅ الخضرا جنب ملف في OneDrive معناها؟",o:["متزامن ومتاح أوفلاين","مشكلة","محذوف"],a:0},
+{q:"اللي بيحول الـ Backup من أمنية لخطة حقيقية؟",o:["فلاشة كبيرة","اختبار الاسترجاع","نت سريع"],a:1},
+{q:"الـ Google Colab هو؟",o:["بيئة بايثون سحابية بحفظ تلقائي","برنامج رسم","لعبة"],a:0},
+{q:"أنهي ملفات مش محتاجة Backup؟",o:["صور العيلة","الألعاب والبرامج اللي بتت reinstall","بحوثك"],a:1},
+{q:"ليه لازم نسخة تكون خارج البيت؟",o:["أسرع","حريق أو سرقة بياخدوا الجهاز والهارد مع بعض","أرخص"],a:1},
+{q:"أحسن مراجعة قبل الامتحان؟",o:["قراءة بالعين لحد الفجر","إعادة العمل بالإيد + نوم كويس","قلق"],a:1}
+];
+
+/* ================= الحالة ================= */
+let answers=Array(Q.length).fill(null), remaining=3600, timerId=null, submitted=false, student={name:"",age:""};
+
+function startExam(){
+  const n=document.getElementById('stName').value.trim();
+  const a=document.getElementById('stAge').value.trim();
+  const e=document.getElementById('regErr');
+  if(n.length<3){e.textContent="⚠️ اكتب اسمك بالكامل الأول (3 حروف على الأقل).";return;}
+  if(a===""||+a<10||+a>20){e.textContent="⚠️ اكتب سن صحيح بين 10 و20.";return;}
+  student={name:n,age:a};
+  document.getElementById('scrReg').classList.add('hidden');
+  document.getElementById('scrExam').classList.remove('hidden');
+  document.getElementById('barName').textContent="👤 "+student.name+" · "+student.age+" سنة";
+  renderQuestions(); renderPalette(); startTimer();
+  window.scrollTo(0,0);
+}
+
+function renderQuestions(){
+  const box=document.getElementById('questions');
+  box.innerHTML=Q.map((item,i)=>`
+    <div class="qbox" id="qb${i}">
+      <span class="qn">سؤال ${i+1}</span> <b class="qt">${item.q}</b>
+      ${item.o.map((op,j)=>`
+        <label class="opt" id="op${i}_${j}">
+          <input type="radio" name="q${i}" onchange="pick(${i},${j})"> ${op}
+        </label>`).join("")}
+    </div>`).join("");
+}
+
+function renderPalette(){
+  document.getElementById('pal').innerHTML=Q.map((_,i)=>`<button id="pb${i}" onclick="document.getElementById('qb${i}').scrollIntoView({behavior:'smooth',block:'center'})">${i+1}</button>`).join("");
+}
+
+function pick(i,j){
+  answers[i]=j;
+  Q[i].o.forEach((_,k)=>document.getElementById(`op${i}_${k}`).classList.toggle('sel',k===j));
+  document.getElementById('pb'+i).classList.add('done');
+  document.getElementById('prog').textContent=answers.filter(x=>x!==null).length;
+}
+
+function startTimer(){
+  timerId=setInterval(()=>{
+    remaining--;
+    const m=Math.floor(remaining/60), s=remaining%60;
+    const t=document.getElementById('timer');
+    t.textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    if(remaining<=300)t.classList.add('danger');
+    if(remaining<=0){clearInterval(timerId);submitPaper(true,true);}
+  },1000);
+}
+
+function closeModal(){document.getElementById('modal').classList.add('hidden');}
+
+function submitPaper(force,auto=false){
+  if(submitted)return;
+  const empty=answers.filter(x=>x===null).length;
+  if(!force&&empty>0){
+    document.getElementById('modalMsg').textContent=`انت سيبت ${empty} سؤال من غير إجابة — كل سؤال متساب بياخد صفر. متأكد عايز تسلّم؟`;
+    document.getElementById('modal').classList.remove('hidden');
+    return;
+  }
+  submitted=true; clearInterval(timerId);
+  buildResult(auto);
+}
+
+function buildResult(auto){
+  let ok=0;
+  const list=document.getElementById('resultList');
+  list.innerHTML=Q.map((item,i)=>{
+    const a=answers[i];
+    const correct=a===item.a;
+    if(correct)ok++;
+    const badge= a===null?`<span class="badge b-y">⬜ بدون إجابة</span>`: correct?`<span class="badge b-g">✅ صحيحة</span>`:`<span class="badge b-r">❌ خطأ</span>`;
+    const ansText= a===null?"— لم تُجب":item.o[a];
+    const fix= correct?"":`<div class="ans fix">✔️ الإجابة الصحيحة: ${item.o[item.a]}</div>`;
+    return `<div class="ritem ${correct?"":"wrong"}">
+      <b>${i+1}) ${item.q}</b> ${badge}
+      <div class="ans">🖊️ إجابتك: <b>${ansText}</b></div>
+      ${fix}
+    </div>`;
+  }).join("");
+  const wrong=Q.length-ok;
+  document.getElementById('resScore').textContent=ok;
+  document.getElementById('cOk').textContent=ok;
+  document.getElementById('cNo').textContent=wrong;
+  document.getElementById('cEmpty').textContent=answers.filter(x=>x===null).length;
+  document.getElementById('cTime').textContent=Math.round((3600-remaining)/60);
+  document.getElementById('resMeta').textContent=`الطالب: ${student.name} · السن: ${student.age} سنة · ${auto?"⏰ انتهت الوقت — الورقة اتسلمت تلقائياً":"تم التسليم يدوياً"}`;
+  document.getElementById('resVerdict').textContent= ok>=85?"🏆 امتياز — Digital Professional حقيقي!": ok>=60?"✅ ناجح — كمّل بنفس الروح":"💪 محتاج مراجعة — عندك إعادة بعد أسبوع";
+  document.getElementById('scrExam').classList.add('hidden');
+  document.getElementById('scrResult').classList.remove('hidden');
+  window.scrollTo(0,0);
+  setTimeout(()=>window.print(),800);
+}
+</script>
+</body>
+</html>
